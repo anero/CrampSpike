@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
+    <script>
+      $(document).ready(function(){
+        if (typeof(WebSocket) == 'undefined') {
+          alert('WebSocket undefined');
+        }
+
+        connectSocket();
+      });
+
+      function connectSocket() {
+        var ws = new WebSocket('ws://<%= request.host_with_port %>/time');
+        ws.onmessage = function(evt) {
+          $('.currentTime').text(evt.data);
+        };
+        ws.onopen = function() {
+          ws.send({ 'currentTime': true });
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class='currentTime'></div>
+  </body>
+</html>
